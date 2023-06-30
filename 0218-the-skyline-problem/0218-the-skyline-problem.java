@@ -24,7 +24,7 @@ class Solution {
            }
            currMax = pq.peek();
            if(prevMax != currMax ){
-                List<Integer> sub = new ArrayList<>();
+                List<Integer> sub = new ArrayList<>(2);
                 sub.add(height[0]);
                 sub.add(currMax);
                 result.add(sub);
