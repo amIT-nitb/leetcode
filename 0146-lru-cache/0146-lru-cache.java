@@ -70,10 +70,10 @@ class LRUCache {
             node.prev.next = node.next;
             node.next.prev = node.prev;
         }
-        node.next = head;
-        head.prev = node;
-        head = node;
-        node.prev = null;
+            node.next = head;
+            head.prev = node;
+            head = node;
+            node.prev = null;
     }
     
     class Node {
