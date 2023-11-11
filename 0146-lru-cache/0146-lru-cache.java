@@ -24,7 +24,7 @@ class LRUCache {
     }
     
     public void put(int key, int value) {
-                if(cache.containsKey(key)){ // update value at cache
+            if(cache.containsKey(key)){ // update value at cache
              Node node = cache.get(key);
              node.val = value;
              updateToHead(node);
@@ -32,16 +32,7 @@ class LRUCache {
         else{ // new addition to cache
             Node node = new Node(key,value);
             cache.put(key, node);
-            if(size<capacity){ // this might be optimized
-                if(head == null){ // first entry in cache
-                    this.head = node;
-                    this.tail = node;
-                }
-                else{ // insert front of head
-                    node.next = head;
-                    head.prev = node;
-                    head = node;
-                }    
+            if(size<capacity){ // this might be optimized   
                 size++;
             }
             else{ //at capacity need to evict
@@ -54,10 +45,16 @@ class LRUCache {
                         tail.prev.next =null;
                         tail = tail.prev;
                     }
-                node.next = head;
-                head.prev = node;
-                head = node;    
-            }
+            }           
+            if(head == null){ // first entry in cache
+                    this.head = node;
+                    this.tail = node;
+                }
+            else{ // insert front of head
+                    node.next = head;
+                    head.prev = node;
+                    head = node;
+                } 
         }
     }
     
