@@ -1,10 +1,26 @@
+/*
+ * 8. String to Integer (atoi)  (Medium)
+ *
+ * Approach: state-machine in three explicit phases (each with its own loop).
+ *   1. Skip leading whitespace.
+ *   2. Read at most ONE optional sign character (+ or -).
+ *   3. Read digits, accumulating into `result` until a non-digit (break) or end.
+ *   On every digit, check for 32-bit overflow BEFORE the multiply, same trick as
+ *   problem 7: MAX_VALUE/10 = 214748364, its last digit is 7.
+ *
+ *   Splitting into separate loops (vs one big while with branchy if/else, see
+ *   commented-out alternative below) is faster and more readable — each loop
+ *   has a single well-defined condition.
+ *
+ * Time: O(n)   Space: O(1)
+ */
 class Solution {
     public int myAtoi(String s) {
         int len = s.length();
         int index = 0;
         long result =0;
         boolean start = false;
-        boolean negative = false; 
+        boolean negative = false;
      // calculate the leading white and sign before running the main loop as this is faster than checking  multiple if else in one while loop.   
     while (index < len && s.charAt(index) == ' '){
     index++;

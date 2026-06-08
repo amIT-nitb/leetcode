@@ -1,3 +1,12 @@
+/*
+ * 485. Max Consecutive Ones  (Easy)
+ *
+ * Approach: linear scan with a running counter.
+ *   Walk the array; on a 1, increment the running streak and update the max;
+ *   on a 0, reset the streak to 0. Single pass, no extra structures.
+ *
+ * Time: O(n)   Space: O(1)
+ */
 import java.lang.Math;
 class Solution {
     public int findMaxConsecutiveOnes(int[] nums) {

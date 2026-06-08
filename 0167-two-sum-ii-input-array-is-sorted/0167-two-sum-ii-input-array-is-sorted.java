@@ -1,3 +1,20 @@
+/*
+ * 167. Two Sum II - Input Array Is Sorted  (Medium)
+ *
+ * Approach: opposing two pointers, leveraging the sorted invariant.
+ *   l = 0, r = n-1. Compute sum = numbers[l] + numbers[r]:
+ *     - sum > target -> right value is too big, r--
+ *     - sum < target -> left value is too small, l++
+ *     - sum == target -> done.
+ *   Why this is monotonic and can't miss the answer: any pair (i, j) we skip
+ *   was already strictly worse than what we've already proven is achievable.
+ *
+ *   Result is 1-indexed per the problem statement (return left+1, right+1).
+ *   The unsorted hash-map alternative (commented below) is O(n) too but uses
+ *   O(n) space; this approach is O(1) space because the array is already sorted.
+ *
+ * Time: O(n)   Space: O(1)
+ */
 class Solution {
  public int[] twoSum(int[] numbers, int target) {
         

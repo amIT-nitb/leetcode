@@ -1,3 +1,29 @@
+/*
+ * 75. Sort Colors  (Medium)
+ *
+ * Approach: Dutch National Flag — three pointers, one pass, in place.
+ *   Maintain three regions:
+ *     [0 .. low-1]   = all 0s   (frozen, won't be touched again)
+ *     [low .. mid-1] = all 1s
+ *     [mid .. high]  = unknown  (still being scanned)
+ *     [high+1 .. n-1]= all 2s   (frozen)
+ *
+ *      0 0 0 | 1 1 1 | ? ? ? ? | 2 2
+ *            ^ low   ^ mid    ^ high
+ *
+ *   At each step inspect nums[mid]:
+ *     0 -> swap with low, advance both (the swapped-in is 1, safe to skip).
+ *     1 -> already in place, advance mid only.
+ *     2 -> swap with high, shrink high. DO NOT advance mid — the swapped-in
+ *          value is still unknown and must be re-inspected next iteration.
+ *
+ *   That asymmetry (advance mid on 0 but not on 2) is the part that's easy to
+ *   get wrong. The reason: when we swap from low, low currently holds a 1 that
+ *   we've already classified, so we know what we just received. When we swap
+ *   from high, high holds an unclassified value.
+ *
+ * Time: O(n)   Space: O(1)
+ */
 class Solution {
 
    public void  swap (int[] nums, int i, int j){
@@ -21,6 +47,7 @@ class Solution {
                     break;
                 case 2 :
                     swap(nums, mid, high);
+                    // do NOT advance mid: swapped-in value is still unclassified
                     high--;
                     break;
             }
