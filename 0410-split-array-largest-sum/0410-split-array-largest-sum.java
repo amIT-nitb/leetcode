@@ -1,3 +1,27 @@
+/*
+ * 410. Split Array Largest Sum  (Hard)
+ *
+ * Approach: binary search on the ANSWER (not on indices).
+ *   The answer (the largest subarray sum) is bounded:
+ *     lo = max(nums)   — any single element forces the answer to be at least this
+ *     hi = sum(nums)   — using m=1 (one big subarray) gives this upper bound
+ *   For a candidate cap `mid`, ask: "can we partition nums into <= m subarrays
+ *   such that no subarray sums above `mid`?" via greedy left-to-right pass.
+ *   If yes, try smaller (hi = mid - 1, remember mid as a feasible answer).
+ *   If no, we need bigger (lo = mid + 1).
+ *
+ *      cap=mid feasible -> shrink the range to the LEFT (smaller cap)
+ *               infeasible -> grow the range to the RIGHT (larger cap)
+ *
+ *   The greedy isPossible check is correct because if a sum ever exceeds mid,
+ *   the only way to fix it is to start a new subarray at that index — there's
+ *   no benefit to splitting earlier.
+ *
+ *   Watch the mid formula: lo + (hi - lo)/2, NOT (lo + hi)/2. Sums can be
+ *   large (up to ~1e9 * 1000), and (lo + hi) can overflow int.
+ *
+ * Time: O(n * log(sum - max))   Space: O(1)
+ */
 class Solution {
     public int splitArray(int[] nums, int m) {
             

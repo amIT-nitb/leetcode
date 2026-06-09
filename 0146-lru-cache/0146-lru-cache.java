@@ -1,9 +1,36 @@
+/*
+ * 146. LRU Cache  (Medium)
+ *
+ * Approach: HashMap + doubly linked list (DIY, no LinkedHashMap).
+ *   - HashMap<key, Node> -> O(1) lookup of any node by key.
+ *   - Doubly-linked list ordered by recency: head = most-recent, tail = least-recent.
+ *   - get(key):  if hit, move node to head; return val. miss -> -1.
+ *   - put(key,v): if hit, update val + move to head.
+ *                 else create node, insert at head. If at capacity, evict tail
+ *                 (remove from map AND from list) before inserting.
+ *
+ *   Doubly-linked is required because eviction-from-tail and move-from-middle
+ *   both need O(1) unlink, which a singly-linked list can't give without an
+ *   extra hop.
+ *
+ *      head <-> n1 <-> n2 <-> ... <-> tail        (most recent ... least recent)
+ *           access n2  ->  unlink n2, push at head
+ *           overflow   ->  drop tail, push new at head
+ *
+ *   Edge cases the code handles:
+ *     - capacity == 1: when evicting, tail.prev is null; new node becomes both
+ *       head and tail.
+ *     - first insertion: head and tail both null until the first put creates
+ *       a node, then both point to it.
+ *
+ * Time: O(1) per get/put   Space: O(capacity)
+ */
 class LRUCache {
-    
+
    int capacity;
    int size;
    Node head;
-   Node tail; 
+   Node tail;
    HashMap<Integer, Node> cache;
 
     public LRUCache(int capacity) {
@@ -59,17 +86,21 @@ class LRUCache {
     }
     
     public void updateToHead(Node node){
+        // already most-recent: nothing to do
         if(node == head){
             return;
         }
+        // unlinking the tail: hoist tail back one step
         else if(node == tail){
             tail = tail.prev;
             tail.next = null;
         }
+        // middle of list: stitch neighbors together to remove `node`
         else{
             node.prev.next = node.next;
             node.next.prev = node.prev;
         }
+            // re-attach `node` at the head
             node.next = head;
             head.prev = node;
             head = node;
